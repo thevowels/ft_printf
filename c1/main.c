@@ -1,38 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   variadic.c                                         :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/14 09:41:45 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/14 11:26:50 by aphyo-ht         ###   ########.fr       */
+/*   Created: 2025/09/14 12:53:25 by aphyo-ht          #+#    #+#             */
+/*   Updated: 2025/09/14 19:50:42 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdio.h>
+#include "ft_printf.h"
 
-int	sum(int count, ...)
+int main(void)
 {
-	int		i;
-	int		total;
-	va_list	args;
-
-	va_start(args, count);
-	i = 0;
-	total = 0;
-	while (i < count)
-	{
-		total += va_arg(args, int);
-		i++;
-	}
-	return (total);
-}
-
-int	main(void)
-{
-	printf("Result: %i\n", sum(5, 1, 2, 3, 4, 7));
-
-	return (0);
+	ft_printf("Char is %c\n",42);
+	ft_printf("Digit: %d\n", 23423);
+	ft_printf("Digit: %d\n", -23423);
+	
 }

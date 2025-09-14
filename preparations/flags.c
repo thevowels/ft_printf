@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   variadic.c                                         :+:      :+:    :+:   */
+/*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/14 09:41:45 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/14 11:26:50 by aphyo-ht         ###   ########.fr       */
+/*   Created: 2025/09/14 11:19:16 by aphyo-ht          #+#    #+#             */
+/*   Updated: 2025/09/14 12:34:54 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
 #include <stdio.h>
-
-int	sum(int count, ...)
-{
-	int		i;
-	int		total;
-	va_list	args;
-
-	va_start(args, count);
-	i = 0;
-	total = 0;
-	while (i < count)
-	{
-		total += va_arg(args, int);
-		i++;
-	}
-	return (total);
-}
 
 int	main(void)
 {
-	printf("Result: %i\n", sum(5, 1, 2, 3, 4, 7));
+	int	i;
 
-	return (0);
+	i = 42;
+	printf("Character 		%%c 	: %c\n", '*');
+	printf("String    		%%s 	: %s\n", "1337");
+	printf("Pointer   		%%p 	: %p\n", &i);
+	printf("Pointer   		%%p 	: %p\n", NULL);
+	printf("Decimal   		%%d 	: %d\n", i);
+	printf("Integer   		%%i 	: %i\n", i);
+	printf("Hex Upper 		%%X 	: %X\n", i);
+	printf("Hex Lower		%%x 	: %x\n", i);
+	printf("Percent 		%%%%	: %%\n");
 }

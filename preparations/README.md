@@ -6,3 +6,7 @@
 [va_start va_arg va_end va_copy ](https://man7.org/linux/man-pages/man3/va_start.3.html)
 
 ``man 3 va_start``
+
+# Understanding the printf
+
+`` man --all printf ``
