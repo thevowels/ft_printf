@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:44:33 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/14 14:18:29 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:31:25 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ void	ft_putchar_pf(char c, int *count)
 	(*count)++;
 }
 
-int ft_strlen(char *base)
+int	ft_strlen(char *base)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	while (base[i])
 		i++;
-	return(i);
-	
+	return (i);
 }
+
 void	ft_putstr_pf(char *str, int *count)
 {
 	int	i;
@@ -69,17 +70,17 @@ void	ft_putnbr_pf_base(unsigned int nbr, char *base, int *count)
 	int		length;
 
 	length = ft_strlen(base);
-	if(length < 10)
-		return;
+	if (length < 10)
+		return ;
 	nb = nbr;
-	if(nb < 0)
+	if (nb < 0)
 	{
 		nb *= -1;
 		ft_putchar_pf('-', count);
 	}
-	if(nb < length)
+	if (nb < length)
 		ft_putchar_pf(base[nb], count);
-	if(nb >= length)
+	if (nb >= length)
 	{
 		ft_putnbr_pf_base(nb / length, base, count);
 		ft_putnbr_pf_base(nb % length, base, count);

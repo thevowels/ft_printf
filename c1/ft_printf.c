@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:36:37 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/14 19:54:06 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:32:27 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	ft_check(va_list args, char *string, int i, int *count)
 
 int	ft_printf(const char *format, ...)
 {
-	va_list args;
-	char *string;
-	int count;
-	int i;
+	va_list	args;
+	char	*string;
+	int		count;
+	int		i;
 
 	string = (char *)format;
 	va_start(args, format);
