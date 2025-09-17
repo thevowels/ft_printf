@@ -6,20 +6,34 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 22:26:05 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/16 09:08:57 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/09/18 02:09:45 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <unistd.h>
 
-/*
-	flag:
-	1	base 10
-	2	base 16 Lower case
-	3	base 16 Upper case
-*/
-int	ft_fpf_printbase(int base, int upper, long nb)
+/**
+ * @brief Prints a numeric value in a specified base.
+ * 
+ * This function prints a number in the specified base (10 or 16) and handles
+ * formatting for signed integers, unsigned integers, and hexadecimal values.
+ * It also supports uppercase and lowercase formatting for hexadecimal numbers.
+ * 
+ * @param base 
+ *      The base to use for printing the number. Typically 10 (decimal) or 16 
+ *		(hexadecimal).
+ * @param upper 
+ *      Determines the formatting for hexadecimal numbers:
+ *      - 'u': Sets the base to 10 (decimal).
+ *      - 'x': Uses lowercase letters for hexadecimal (e.g., "abcdef").
+ *      - 'X': Uses uppercase letters for hexadecimal (e.g., "ABCDEF").
+ * @param nb 
+ *      The number to print. Can be a signed or unsigned integer.
+ * @return int 
+ *      The total number of characters written to the output.
+ */
+static int	ft_fpf_printbase(int base, int upper, long nb)
 {
 	char	*str_base[2];
 	int		length;
@@ -48,7 +62,19 @@ int	ft_fpf_printbase(int base, int upper, long nb)
 	return (length);
 }
 
-int	ft_fpf_printstr(char *str)
+/**
+ * @brief Prints a string to the standard output.
+ * 
+ * This function writes the given string to the standard output. If the string
+ * is NULL, it prints "(null)" instead. The function returns the total number
+ * of characters written.
+ * 
+ * @param str 
+ *      The string to print. If NULL, "(null)" is printed.
+ * @return int 
+ *      The total number of characters written to the output.
+ */
+static int	ft_fpf_printstr(char *str)
 {
 	int	i;
 
@@ -63,44 +89,48 @@ int	ft_fpf_printstr(char *str)
 	return (i);
 }
 
-int	ft_fpf_printnbr(int i)
-{
-	int		length;
-	long	nb;
-	char	c;
-
-	length = 0;
-	nb = (long)i;
-	if (nb < 0)
-	{
-		nb *= -1;
-		length += write(1, "-", 1);
-	}
-	if (nb < 10)
-	{
-		c = nb + '0';
-		length += write(1, &c, 1);
-	}
-	if (nb >= 10)
-	{
-		length += ft_fpf_printnbr(nb / 10);
-		length += ft_fpf_printnbr(nb % 10);
-	}
-	return (length);
-}
-
-void	ft_formats(va_list args, const char format, int *length,
+/**
+ * @brief Handles formatting and printing for various specifiers.
+ * 
+ * This function processes format specifiers and prints the corresponding
+ * arguments. It supports the following specifiers:
+ * - 's': Prints a string.
+ * - 'd' or 'i': Prints a signed integer in decimal format.
+ * - 'u': Prints an unsigned integer in decimal format.
+ * - 'x': Prints an unsigned integer in lowercase hexadecimal format.
+ * - 'X': Prints an unsigned integer in uppercase hexadecimal format.
+ * - 'p': Prints a pointer address in hexadecimal format.
+ * - '%%': Prints a literal '%' character.
+ * 
+ * If an invalid specifier is encountered, the function writes the character
+ * preceding the specifier and the specifier itself to the output.
+ * 
+ * @param args 
+ *      The list of arguments passed to the function.
+ * @param f 
+ *      The current format specifier being processed.
+ * @param length 
+ *      A pointer to the total length of characters written so far.
+ * @param ptr 
+ *      A temporary variable used for pointer formatting.
+ * 
+ * @note The line `(*length) += write(1, (f - 1), (1 + (*f != '%')));` handles
+ *       invalid specifiers or literal '%' characters. It writes the character
+ *       preceding the current format specifier or the '%' itself to the output.
+ *       - If `*f` is not '%', it writes two characters: the preceding character
+ *         and the current one.
+ *       - If `*f` is '%', it writes only the '%' character.
+ */
+static void	ft_formats(va_list args, const char *f, int *length,
 		unsigned long long ptr)
 {
-	if (format == 's')
+	if (*f == 's')
 		(*length) += ft_fpf_printstr(va_arg(args, char *));
-	else if (format == 'd' || format == 'i')
+	else if (*f == 'd' || *f == 'i')
 		(*length) += ft_fpf_printbase(10, 0, va_arg(args, int));
-	else if (format == 'u' || format == 'x' || format == 'X')
-		(*length) += ft_fpf_printbase(16, format, va_arg(args, unsigned int));
-	else if (format == '%')
-		(*length) += write(1, "%", 1);
-	else if (format == 'p')
+	else if (*f == 'u' || *f == 'x' || *f == 'X')
+		(*length) += ft_fpf_printbase(16, *f, va_arg(args, unsigned int));
+	else if (*f == 'p')
 	{
 		ptr = va_arg(args, unsigned long long);
 		if (!ptr)
@@ -116,8 +146,32 @@ void	ft_formats(va_list args, const char format, int *length,
 			(*length) += ft_fpf_printbase(16, 'x', ptr);
 		}
 	}
+	else
+		(*length) += write(1, (f - 1), (1 + (*f != '%')));
 }
 
+/**
+ * @brief A simplified implementation of printf.
+ * 
+ * This function mimics the behavior of the standard printf function. It
+ * processes a format string and prints the corresponding arguments to the
+ * standard output. Supported format specifiers include:
+ * - 'c': Prints a single character.
+ * - 's': Prints a string.
+ * - 'd' or 'i': Prints a signed integer in decimal format.
+ * - 'u': Prints an unsigned integer in decimal format.
+ * - 'x': Prints an unsigned integer in lowercase hexadecimal format.
+ * - 'X': Prints an unsigned integer in uppercase hexadecimal format.
+ * - 'p': Prints a pointer address in hexadecimal format.
+ * - '%%': Prints a literal '%' character.
+ * 
+ * @param str 
+ *      The format string containing text and format specifiers.
+ * @param ... 
+ *      The variable arguments to be formatted and printed.
+ * @return int 
+ *      The total number of characters written to the output.
+ */
 int	ft_printf(const char *str, ...)
 {
 	va_list				args;
@@ -137,7 +191,7 @@ int	ft_printf(const char *str, ...)
 				length += write(1, &ptr, 1);
 			}
 			else
-				ft_formats(args, *str, &length, ptr);
+				ft_formats(args, str, &length, ptr);
 		}
 		else
 			length += write(1, str, 1);

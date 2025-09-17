@@ -6,7 +6,7 @@
 #    By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/16 06:00:39 by aphyo-ht          #+#    #+#              #
-#    Updated: 2025/09/16 09:08:22 by aphyo-ht         ###   ########.fr        #
+#    Updated: 2025/09/18 00:32:12 by aphyo-ht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,13 @@ SRC			= ft_printf.c
 
 OBJ = $(SRC:.c=.o)
 
+%.o: %.c Makefile ft_printf.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(AR) $(ARFLAGS) -o $(NAME) $(OBJ)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ)
 
 clean:
 		rm -f $(OBJ)
