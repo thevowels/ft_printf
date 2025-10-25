@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 22:26:05 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/09/16 05:55:47 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/26 01:58:45 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,16 @@ int	ft_fpf_printnbr(int i)
 	return (length);
 }
 
-void	ft_formats(va_list args, const char format, int *length,
+void	ft_formats(va_list args, const char *f, int *length,
 		unsigned long long ptr)
 {
-	if (format == 's')
+	if (*f == 's')
 		(*length) += ft_fpf_printstr(va_arg(args, char *));
-	else if (format == 'd' || format == 'i')
+	else if (*f == 'd' || *f == 'i')
 		(*length) += ft_fpf_printbase(10, 0, va_arg(args, int));
-	else if (format == 'u' || format == 'x' || format == 'X')
-		(*length) += ft_fpf_printbase(16, format, va_arg(args, unsigned int));
-	else if (format == '%')
-		(*length) += write(1, "%", 1);
-	else if (format == 'p')
+	else if (*f == 'u' || *f == 'x' || *f == 'X')
+		(*length) += ft_fpf_printbase(16, *f, va_arg(args, unsigned int));
+	else if (*f == 'p')
 	{
 		ptr = va_arg(args, unsigned long long);
 		if (!ptr)
@@ -116,6 +114,8 @@ void	ft_formats(va_list args, const char format, int *length,
 			(*length) += ft_fpf_printbase(16, 'x', ptr);
 		}
 	}
+	else
+		(*length) += write(1, (f - 1), (1 + (*f != '%' && *f != 0)));
 }
 
 int	ft_printf(const char *str, ...)
@@ -126,7 +126,7 @@ int	ft_printf(const char *str, ...)
 
 	length = 0;
 	va_start(args, str);
-	while (*str)
+	while (str && *str)
 	{
 		ptr = 0;
 		if (*str == '%')
@@ -137,11 +137,11 @@ int	ft_printf(const char *str, ...)
 				length += write(1, &ptr, 1);
 			}
 			else
-				ft_formats(args, *str, &length, ptr);
+				ft_formats(args, str, &length, ptr);
 		}
 		else
 			length += write(1, str, 1);
-		str++;
+		*str && str++;
 	}
 	va_end(args);
 	return (length);
