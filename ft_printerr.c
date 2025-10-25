@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printerr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 22:26:05 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/26 02:11:32 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/26 02:10:55 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 	2	base 16 Lower case
 	3	base 16 Upper case
 */
-int	ft_fpf_printbase(int base, int upper, long nb)
+static int	ft_fpf_printbase(int base, int upper, long nb)
 {
 	char	*str_base[2];
 	int		length;
@@ -36,14 +36,14 @@ int	ft_fpf_printbase(int base, int upper, long nb)
 	if (nb < 0)
 	{
 		nb *= -1;
-		length += write(1, "-", 1);
+		length += write(2, "-", 1);
 	}
 	if (nb < base)
-		length += write(1, &str_base[upper][nb], 1);
+		length += write(2, &str_base[upper][nb], 1);
 	if (nb >= base)
 	{
 		length += ft_fpf_printbase(base, upper, (nb / base));
-		length += write(1, &str_base[upper][nb % base], 1);
+		length += write(2, &str_base[upper][nb % base], 1);
 	}
 	return (length);
 }
@@ -58,12 +58,12 @@ static int	ft_fpf_printstr(char *str)
 	i = 0;
 	while(*str)
 		i++;
-	write(1,str,i);
+	write(2,str,i);
 	return (i);
 }
 
 
-void	ft_formats(va_list args, const char *f, int *length,
+static void	ft_formats(va_list args, const char *f, int *length,
 		unsigned long long ptr)
 {
 	if (*f == 's')
@@ -89,10 +89,10 @@ void	ft_formats(va_list args, const char *f, int *length,
 		}
 	}
 	else
-		(*length) += write(1, (f - 1), (1 + (*f != '%' && *f != 0)));
+		(*length) += write(2, (f - 1), (1 + (*f != '%' && *f != 0)));
 }
 
-int	ft_printf(const char *str, ...)
+int	ft_printerr(const char *str, ...)
 {
 	va_list				args;
 	int					length;
@@ -108,13 +108,13 @@ int	ft_printf(const char *str, ...)
 			if (*(++str) == 'c')
 			{
 				ptr = va_arg(args, int);
-				length += write(1, &ptr, 1);
+				length += write(2, &ptr, 1);
 			}
 			else
 				ft_formats(args, str, &length, ptr);
 		}
 		else
-			length += write(1, str, 1);
+			length += write(2, str, 1);
 		*str && str++;
 	}
 	va_end(args);

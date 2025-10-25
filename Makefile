@@ -6,7 +6,7 @@
 #    By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/16 06:00:39 by aphyo-ht          #+#    #+#              #
-#    Updated: 2025/09/18 00:32:12 by aphyo-ht         ###   ########.fr        #
+#    Updated: 2025/10/26 02:07:28 by aphyo-ht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 AR			= ar
 ARFLAGS		= rcs
-SRC			= ft_printf.c 
+SRC			= ft_printf.c ft_printerr.c
 
 OBJ = $(SRC:.c=.o)
 
