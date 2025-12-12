@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 22:26:05 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/26 02:11:32 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:07:55 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_fpf_printstr(char *str)
 		return (ft_fpf_printstr("(null)"));
 	
 	i = 0;
-	while(*str)
+	while(str[i])
 		i++;
 	write(1,str,i);
 	return (i);
